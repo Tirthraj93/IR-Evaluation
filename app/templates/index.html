@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manual Assessment</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+          crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/css/common.css">
+
+</head>
+<body>
+    <br><br><br><br>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="panel-title">
+                Welcome, User!
+            </h1>
+            <p>
+                <h3>What would you like to do today?</h3>
+            </p>
+            <br><br>
+            <a href="{{ url_for('manual_assessment.assess')}}" methods="get">
+                <button class="btn btn-primary">Manual Assessment</button>
+            </a>
+            <a href="{{ url_for('manual_assessment.store_results')}}" methods="get">
+                <button class="btn btn-primary">Store Results</button>
+            </a>
+            <a href="{{ url_for('trec_eval.trec_evaluation')}}" methods="get">
+                <button class="btn btn-primary">TREC Evaluation</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manual Assessment</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+          crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../static/css/common.css">
+
+</head>
+<body>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" align="center">
+                Manual Assessment for Creating QRel
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="raw">
+                <form class="form-inline"
+                        action="{{ url_for('manual_assessment.assess')}}"
+                        method="post">
+                    <div class="col-sm-3 form-group">
+                        <label class="control-label">
+                            Assessor
+                        </label>
+                        <select class="form-control" name="assessor">
+                            <option>Tirthraj</option>
+                            <option>Manthan</option>
+                            <option>Shabbir</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        <label class="control-label">
+                            Query
+                        </label>
+                        <select class="form-control" name="query_id">
+                            <option value="151201">picasso paintings</option>
+                            <option value="151202">brancusi sculptures</option>
+                            <option value="151203">barcelona gaudi architecture</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        <label class="control-label">
+                            Documents Count
+                        </label>
+                        <input class="form-control" name="doc_count" value="200" readonly/>
+                    </div>
+                    <div class="col-sm-2 form-group">
+                        <button type="submit" class="btn btn-primary">Get Documents</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% block body %}
+            {% if doc_list|length >  0 %}
+                <div class="raw">
+                    <div class="col-sm-3 grade-doc-panel">
+                        <div class="panel panel-primary new-background">
+                        <div class="panel-heading" align="center">
+                            <h3 class="panel-title">
+                                Grade Documents
+                            </h3>
+                        </div>
+                        <form class="form-horizontal"
+                                        action="{{ url_for('manual_assessment.store')}}"
+                                        method="post">
+                            <input name="doc_size" value="{{ doc_list|length }}" hidden/>
+                            <div class="panel-body doc-list-panel">
+                                <div class="vertical-scroll">
+                                    {% set i = 1 %}
+                                    {% for doc in doc_list %}
+                                    <input name="index_id_{{ i }}" value="{{ doc.index_id }}" hidden/>
+                                    <input name="query_id_{{ i }}" value="{{ doc.query_id }}" hidden/>
+                                    <input name="assessor_{{ i }}" value="{{ doc.assessor }}" hidden/>
+                                    <div class="form-group bottom link-set">
+                                        <input name="document_{{ i }}" value="{{ doc.document }}" hidden/>
+                                        <div class="col-sm-6" align="center">
+                                            <a class="url" href="#" data-value="{{ doc.document }}">{{ doc.index_id }}</a>
+                                        </div>
+                                        <div class="col-sm-6" align="center">
+                                            {% set grade = doc.grade %}
+                                            <select class="form-control" name="grade_{{ i }}">
+                                                <option value="0" {% if grade=='0' %} selected="selected"{% endif %}>Non relevant</option>
+                                                <option value="1" {% if grade=='1' %} selected="selected"{% endif %}>Relevant</option>
+                                                <option value="2" {% if grade=='2' %} selected="selected"{% endif %}>Very relevant</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    {% set i = i + 1 %}
+                                            {% endfor %}
+                                </div>
+                            </div>
+                            <div class="panel-footer submit-panel" align="center">
+                                <button type="submit" class="btn btn-primary" name="button" value="store_es">Submit Assessment</button>
+                                <button type="submit" class="btn btn-primary" name="button" value="export">Export</button>
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                    <div class="col-sm-9 doc-view-panel">
+                        <div class="panel panel-primary new-background">
+                            <div class="panel-heading" align="center">
+                                <h3 class="panel-title">
+                                    <a id="url_address" href="#" target="_blank">Document Content</a>
+                                </h3>
+                            </div>
+                            <div class="panel-body doc-list-panel view-vertical-scroll">
+                                <iframe id="view_frame" src="" class="view-frame">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endblock %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+    <script src="../../static/js/ManualAssessment/doc_view.js"></script>
+</body>
+</html>

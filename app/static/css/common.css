@@ -1,0 +1,56 @@
+body {
+    background-color: #f6f6f6;
+}
+
+.new-background {
+    background-color: #f6f6f6;
+}
+
+.grade-doc-panel {
+    padding: 10px 0px 0px 0px;
+}
+
+.doc-list-panel {
+    padding: 5px 0px 0px 0px;
+}
+
+.doc-view-panel {
+    padding: 10px 0px 0px 10px;
+}
+
+.submit-panel {
+    padding-top: 10px;
+}
+
+.bottom {
+    border-bottom: 1px solid #428bca;
+}
+
+.link-set {
+    margin-bottom: 6px;
+}
+
+.vertical-scroll {
+    height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.view-vertical-scroll {
+    height: 460px;
+}
+
+.eval-vertical-scroll {
+    height: 336px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.graph-panel {
+    height: 460px;
+}
+
+.view-frame {
+    height: 100%;
+    width: 100%;
+}

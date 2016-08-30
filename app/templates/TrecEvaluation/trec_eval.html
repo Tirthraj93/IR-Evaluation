@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TREC Evaluation</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+          crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../static/css/common.css">
+
+</head>
+<body>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" align="center">
+                Perform TREC Evaluation
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <form class="form-inline"
+                        action="{{ url_for('trec_eval.evaluate')}}"
+                        method="post">
+                    <div class="col-sm-4 form-group">
+                        <label class="control-label">
+                            Results File to Evaluate
+                        </label>
+                        <select class="form-control set-qrel" name="results_file">
+                            {% for key in results_files %}
+                                <option value="{{ key }}">{{ results_files[key] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        <label class="control-label">
+                            Qrel File
+                        </label>
+                        <select class="form-control set-qrel" name="qrel_file">
+                            {% for key in qrel_files %}
+                                <option value="{{ key }}">{{ qrel_files[key] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-2 form-group">
+                        <div class="checkbox form-control">
+                            <label>
+                              <input type="checkbox" name="show_query" value="True"> -q
+                            </label>
+                          </div>
+                    </div>
+                    <div class="col-sm-2 form-group">
+                        <button type="submit" class="btn btn-primary form-control" name="evaluate">Evaluate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if evaluation|length >  0 %}
+            <div class="raw">
+                <div class="col-sm-4 doc-view-panel">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" align="center">
+                                Evaluation
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="eval-vertical-scroll">
+                                {% for string in evaluation %}
+                                    {{ string }}<br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="panel-footer submit-panel" align="center">
+                            <button id="draw_graph" type="submit" class="btn btn-primary">Draw Precision-Recall Curve</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 doc-view-panel">
+                    <div class="panel panel-primary graph-panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" align="center">
+                                Graph
+                            </h3>
+                        </div>
+                        <div class="panel-body .eval-vertical-scroll">
+                            {% for key in precision %}
+                                <div id="chart_div_{{ key }}" style="height: 400px;"></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="../../static/js/amcharts.js" type="text/javascript"></script>
+    <script src="../../static/js/serial.js" type="text/javascript"></script>
+    <script src="https://www.amcharts.com/lib/3/xy.js"></script>
+    <script src="../../static/js/TrecEvaluation/trec_eval.js" type="text/javascript"></script>
+    <script>
+        var precision = {{ precision|tojson }};
+        var recall = {{ recall|tojson }};
+    </script>
+</body>
+</html>
